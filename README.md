@@ -19,4 +19,3 @@ Bem-vindo ao repositório do Projeto de Vendas Web! Este é um sistema de gerenc
 Antes de começar, certifique-se de ter instalado:
 
 - [Node.js](https://nodejs.org/)
-- [MongoDB](https://www.mongodb.com/)
