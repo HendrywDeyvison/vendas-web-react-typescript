@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import axios from "axios";
 import Button from "../../../shared/buttons/button/Button";
 import Input from "../../../shared/inputs/input/Input";
 import { ContainerLoginScreen, BackgroundImage, LogoImage, LimitedContainer, ContainerLogin, TitleLogin } from "../styles/loginScreen.styles";
@@ -15,8 +16,20 @@ const LoginScreen = () =>{
         setPassword(event.target.value);
     }
 
-    const handleLogin = () =>{
-        console.log(username, password);
+    const handleLogin = async () =>{
+        const returnObject = await axios.post("http://localhost:3000/users/",
+        {
+            body: {
+                "user": username,
+                "password": password
+            }
+        }).then(result => {
+
+            alert(`AccessToken: ${result}`)
+            return result
+        })
+
+        console.log(returnObject);
     };
 
     return (

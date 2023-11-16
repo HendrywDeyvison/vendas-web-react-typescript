@@ -1,0 +1,19 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Hendryw",
+      "location": "Brazil",
+      "user": "root@root.com",
+      "password": "root1234",
+      "accessToken": "rootToken1234``jshsb"
+    },
+    {
+      "id": 2,
+      "name": "Julio",
+      "location": "Canadá",
+      "user": "julio@gnail.com",
+      "password": "1234"
+    }
+  ]
+}
