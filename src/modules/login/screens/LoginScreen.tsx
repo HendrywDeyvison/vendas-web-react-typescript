@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
   ContainerLoginScreen,
   BackgroundImage,
@@ -14,7 +14,7 @@ import Button from "../../../shared/components/buttons/button/Button";
 import { useGlobalContext} from "../../../shared/hooks/useGlobalContext";
 
 const LoginScreen = () => {
-  const { accessToken, setAccessToken } = useGlobalContext();
+  const { accessToken } = useGlobalContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { getRequest, loading } = useRequests();

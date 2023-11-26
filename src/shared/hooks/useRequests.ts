@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
+import { useGlobalContext } from "./useGlobalContext";
 
 export const useRequests = () =>{
     const [loading, setLoading] = useState(false);
+    const { setAccessToken, setNotification } = useGlobalContext();
 
     const getRequest = async (url: string) =>{
         setLoading(true);
@@ -11,13 +13,18 @@ export const useRequests = () =>{
             .then(result => {
 
                 if(result?.data?.length > 0){
+                    setAccessToken(result.data[0].accessToken);
+                    setNotification('Login efetuado com sucesso!', 'success', 'Bem vindo ao sistema!', 'bottomRight');
+                    alert('Login efetuado com sucesso!')
+                    setLoading(false);
+                    
                     return result.data
                 }
 
                 throw(result)
             })
             .catch(() => {
-                
+                setNotification('Usuário ou senha Inválidos!', 'error', 'Verifique a senha e o usuário!', 'bottomRight');
                 alert('Usuario sem cadastro!')
                 return
             });

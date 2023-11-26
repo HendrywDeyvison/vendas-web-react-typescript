@@ -1,7 +1,17 @@
 import { createContext, useContext, useState } from "react";
 
+type NotificationType = "success" | "error" | "info" | "warning";
+
+type PlacementType = "top" | "topLeft" | "topRight" | "bottom" | "bottomLeft" | "bottomRight" | undefined;
+interface NotificationProps {
+    message: string;
+    type: NotificationType;
+    description?: string;
+    placement?: PlacementType;
+}
 interface GlobalData {
   accessToken?: string;
+  notification?: NotificationProps;
 }
 
 interface GlobalContextProps {
@@ -35,8 +45,22 @@ export const useGlobalContext = () => {
         });
     }; 
 
+    const setNotification = (message: string, type: NotificationType, description?: string, placement?: PlacementType) => {
+        setGlobalData({
+            ...globalData,
+            notification: {
+                message,
+                type,
+                description,
+                placement,
+            },
+        })
+    };
+
     return {
+        notification: globalData?.notification,
         accessToken: globalData?.accessToken,
         setAccessToken,
+        setNotification
     };
 }
