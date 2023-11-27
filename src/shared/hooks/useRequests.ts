@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useGlobalContext } from "./useGlobalContext";
+import { connectionAPIGet } from "../functions/connection/connectioAPI";
 
 export const useRequests = () =>{
     const [loading, setLoading] = useState(false);
@@ -9,26 +10,22 @@ export const useRequests = () =>{
     const getRequest = async (url: string) =>{
         setLoading(true);
 
-        const data = await axios.get(url)
+        const data = await connectionAPIGet(url)
             .then(result => {
-
-                if(result?.data?.length > 0){
-                    setAccessToken(result.data[0].accessToken);
+                if(result){
+                    setAccessToken('result Token');
                     setNotification('Login efetuado com sucesso!', 'success', 'Bem vindo ao sistema!', 'bottomRight');
-                    alert('Login efetuado com sucesso!')
-                    setLoading(false);
-                    
-                    return result.data
+                    return result
                 }
 
                 throw(result)
             })
-            .catch(() => {
-                setNotification('Usuário ou senha Inválidos!', 'error', 'Verifique a senha e o usuário!', 'bottomRight');
-                alert('Usuario sem cadastro!')
-                return
+            .catch((error: Error) => {
+                setLoading(false);
+                setNotification(error.message, 'error', 'Verifique a senha e o usuário!', 'bottomRight');
             });
 
+            console.log(data)
             setLoading(false);
             return data;
     }
