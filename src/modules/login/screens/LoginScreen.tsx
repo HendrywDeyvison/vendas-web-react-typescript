@@ -11,11 +11,9 @@ import SVGHome from "../../../shared/components/icons/SVGHome";
 import { useRequests } from "../../../shared/hooks/useRequests";
 import Input from "../../../shared/components/inputs/input/Input";
 import Button from "../../../shared/components/buttons/button/Button";
-import { useGlobalContext} from "../../../shared/hooks/useGlobalContext";
 import { UserType } from "../types/UserType";
 
 const LoginScreen = () => {
-  const { accessToken, setAccessToken } = useGlobalContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { getRequest, loading } = useRequests();
@@ -28,14 +26,10 @@ const LoginScreen = () => {
     setPassword(event.target.value);
   };
 
-  const handleLogin = async () => {
-    const user = await getRequest<UserType>(
+  const handleLogin = () => {
+   getRequest<UserType>(
       `http://localhost:3000/users?user=${username}&password=${password}`
     );
-
-    setAccessToken(user[0]?.accessToken || '');
-
-    console.log(user[0])
   };
 
   return (
@@ -47,7 +41,7 @@ const LoginScreen = () => {
           <LogoImage src="./logoSemFundo.png" />
           <SVGHome width={10} height={10} />
           <TitleLogin level={2} type="secondary">
-            LOGIN ({accessToken})
+            LOGIN
           </TitleLogin>
           <Input
             placeholder="Digite seu usuário"

@@ -10,10 +10,18 @@ export const useRequests = () =>{
         setLoading(true);
 
         const data = await connectionAPIGet<T>(url)
-            .then(result => result )
+            .then(result => {
+                if(result.length){
+
+                    setNotification('Login Efetuado com Sucesso!', 'success', 'Usuario logado com sucesso!', 'bottomRight');
+                    return result[0]
+                }
+
+                throw(new Error('Usuário não encontrado ou senha inválida!'))
+            })
             .catch((error: Error) => {
                 setLoading(false);
-                setNotification(error.message, 'error', 'Verifique a senha e o usuário!', 'bottomRight');
+                setNotification(error.message, 'error', 'Verifique o usuário e a senha!', 'bottomRight');
                 return undefined;
             });
 
