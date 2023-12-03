@@ -12,9 +12,10 @@ import { useRequests } from "../../../shared/hooks/useRequests";
 import Input from "../../../shared/components/inputs/input/Input";
 import Button from "../../../shared/components/buttons/button/Button";
 import { useGlobalContext} from "../../../shared/hooks/useGlobalContext";
+import { UserType } from "../types/UserType";
 
 const LoginScreen = () => {
-  const { accessToken } = useGlobalContext();
+  const { accessToken, setAccessToken } = useGlobalContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { getRequest, loading } = useRequests();
@@ -28,9 +29,13 @@ const LoginScreen = () => {
   };
 
   const handleLogin = async () => {
-    getRequest(
+    const user = await getRequest<UserType>(
       `http://localhost:3000/users?user=${username}&password=${password}`
     );
+
+    setAccessToken(user[0]?.accessToken || '');
+
+    console.log(user[0])
   };
 
   return (

@@ -2,17 +2,17 @@
   "users": [
     {
       "id": 1,
-      "name": "Hendryw",
+      "name": "ROOT",
       "location": "Brazil",
       "user": "root@root.com",
-      "password": "root1234",
+      "password": "123",
       "accessToken": "rootToken1234``jshsb"
     },
     {
       "id": 2,
-      "name": "Julio",
+      "name": "Hendryw",
       "location": "Canadá",
-      "user": "julio@gnail.com",
+      "user": "hendryw@gmail.com",
       "password": "1234"
     }
   ]
