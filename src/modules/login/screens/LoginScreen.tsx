@@ -16,7 +16,7 @@ import { UserType } from "../types/UserType";
 const LoginScreen = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { getRequest, loading } = useRequests();
+  const { authRequest, loading } = useRequests();
 
   const handleUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -27,7 +27,7 @@ const LoginScreen = () => {
   };
 
   const handleLogin = () => {
-   getRequest<UserType>(
+   authRequest(
       `http://localhost:3000/users?user=${username}&password=${password}`
     );
   };

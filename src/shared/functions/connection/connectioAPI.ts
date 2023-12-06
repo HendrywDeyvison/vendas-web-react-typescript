@@ -1,28 +1,35 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { MethosEnum } from "../../enums/methods.enum";
 import { ERROR_ACCESS_DENIED, ERROR_CONNECTION, ERROR_INVALID_USER } from "../../constants/errorsStatus";
+import { getAuthorizationToken } from "./auth";
 
 export default class ConnectionAPI {
 
     static async call<T>(url: string, method: string, body?: unknown): Promise<T> {
+        const config: AxiosRequestConfig = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: getAuthorizationToken(),
+            }
+        }
 
         switch (method) {
 
             case MethosEnum.GET:
-                return (await axios.get<T>(url)).data
+                return (await axios.get<T>(url, config)).data;
 
             case MethosEnum.DELETE:
-                return (await axios.delete<T>(url)).data
+                return (await axios.delete<T>(url, config)).data;
 
             case MethosEnum.POST:
-                return (await axios.post<T>(url, body)).data
+                return (await axios.post<T>(url, body, config)).data;
 
             case MethosEnum.PUT:
-                return (await axios.put<T>(url, body)).data
+                return (await axios.put<T>(url, body, config)).data;
 
             default:
-                return (await axios.patch<T>(url, body)).data
+                return (await axios.patch<T>(url, body, config)).data;
         }
     }
 

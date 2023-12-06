@@ -6,6 +6,8 @@
       "location": "Brazil",
       "user": "root@root.com",
       "password": "123",
+      "cpf": "123.123.123-12",
+      "phone": "61 1234 1234",
       "accessToken": "rootToken1234``jshsb"
     },
     {
