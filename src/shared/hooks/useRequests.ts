@@ -11,7 +11,7 @@ import { setAuthorizationToken } from "../functions/connection/auth";
 export const useRequests = () =>{
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const { setNotification } = useGlobalContext();
+    const { setNotification, setUser } = useGlobalContext();
 
     const getRequest = async <T>(url: string): Promise<T | undefined> =>{
         setLoading(true);
@@ -52,12 +52,19 @@ export const useRequests = () =>{
         return data;
     }
 
-    const authRequest = async (body: unknown): Promise<void> =>{
+    const authRequest = async (url: string): Promise<void> =>{
         setLoading(true);
 
-        await connectionAPIPost<AuthType>(URL_AUTH, body)
+        await connectionAPIGet<AuthType>(URL_AUTH+url)//connectionAPIPost<AuthType>(URL_AUTH, body)
             .then(result =>{
+
+                if(!result.length){
+                    throw(new Error('Usuário não encontrado ou senha inválida!'))
+                }
+                result = result[0].user;
+                
                 setNotification('Entrando...', 'success');
+                setUser(result);
                 setAuthorizationToken(result.accessToken);
                 navigate(ProductRoutesEnum.PRODUCT);
                 return result;

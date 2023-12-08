@@ -28,7 +28,7 @@ const LoginScreen = () => {
 
   const handleLogin = () => {
    authRequest(
-      `http://localhost:3000/users?user=${username}&password=${password}`
+      `?email=${username}&password=${password}`
     );
   };
 
