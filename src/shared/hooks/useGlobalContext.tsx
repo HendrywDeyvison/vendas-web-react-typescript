@@ -4,12 +4,14 @@ import { UserType } from "../../modules/login/types/UserType";
 type NotificationType = "success" | "error" | "info" | "warning";
 
 type PlacementType = "top" | "topLeft" | "topRight" | "bottom" | "bottomLeft" | "bottomRight" | undefined;
+
 interface NotificationProps {
     message: string;
     type: NotificationType;
     description?: string;
     placement?: PlacementType;
 }
+
 interface GlobalData {
   notification?: NotificationProps;
   user?: UserType;
@@ -57,11 +59,11 @@ export const useGlobalContext = () => {
           user
       });
   };
-
-    return {
-        notification: globalData?.notification,
-        user: globalData?.user,
-        setUser,
-        setNotification,
-    };
+  
+  return {
+      notification: globalData?.notification,
+      user: globalData?.user,
+      setUser,
+      setNotification,
+  };
 }

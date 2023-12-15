@@ -5,7 +5,7 @@ export enum ProductRoutesEnum {
     PRODUCT = "/product",
 }
 
-export const produtScreens: RouteObject[] = [
+export const productScreens: RouteObject[] = [
   {
     path: ProductRoutesEnum.PRODUCT,
     element: <Product />,

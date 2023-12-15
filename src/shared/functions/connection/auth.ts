@@ -17,19 +17,20 @@ export const verifyLoggedIn = async (setUser: (user: UserType)=> void, user?: Us
         if(!token){
             location.href = '/login';
         }
-            await connectionAPIGet<UserType>(URL_USER + token).then((userReturn)=>{
-                if(!userReturn.length){
-                    unsetAuthorizationToken();
-                    throw(new Error('User not found'))
-                }
-                userReturn = userReturn[0].user
+        
+        await connectionAPIGet<UserType>(URL_USER + token).then((userReturn)=>{
+            if(!userReturn.length){
+                unsetAuthorizationToken();
+                throw(new Error('User not found'));
+            }
+            userReturn = userReturn[0].user;
 
-                setUser(userReturn)
-            })
-            .catch((error)=>{
-                location.href = '/login'
-                console.log(error)
-            })
+            setUser(userReturn);
+        })
+        .catch((error)=>{
+            location.href = '/login'
+            console.log(error)
+        })
     }
     return null
 
