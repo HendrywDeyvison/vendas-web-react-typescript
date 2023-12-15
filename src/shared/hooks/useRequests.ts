@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useGlobalContext } from "./useGlobalContext";
-import { connectionAPIGet, connectionAPIPost } from "../functions/connection/connectioAPI";
+import ConnectionAPI, { MethodTypes, connectionAPIGet, connectionAPIPost } from "../functions/connection/connectioAPI";
 import { URL_AUTH } from "../constants/urls";
 import { ERROR_INVALID_PASSWORD } from "../constants/errorsStatus";
 import { useNavigate } from "react-router-dom";
@@ -13,27 +13,23 @@ export const useRequests = () =>{
     const navigate = useNavigate();
     const { setNotification, setUser } = useGlobalContext();
 
-    const getRequest = async <T>(url: string): Promise<T | undefined> =>{
+    const request = async <T>(url: string, method: MethodTypes, saveGlobal?: (object: T)=> void, body?: unknown): Promise<T | undefined> =>{
         setLoading(true);
 
-        const data = await connectionAPIGet<T>(url)
+        const returnObject: T | undefined = await ConnectionAPI.connect<T>(url, method, body)
             .then(result => {
-                if(result.length){
-                    
-                    setNotification('Login Efetuado com Sucesso!', 'success', 'Usuario logado com sucesso!', 'bottomRight');
-                    return result[0]
+                if(saveGlobal){
+                    saveGlobal(result);
                 }
-
-                throw(new Error('Usuário não encontrado ou senha inválida!'))
+                return result;
             })
             .catch((error: Error) => {
-                setLoading(false);
                 setNotification(error.message, 'error', 'Verifique o usuário e a senha!', 'bottomRight');
                 return undefined;
             });
 
         setLoading(false);
-        return data;
+        return returnObject;
     }
 
     const postRequest = async <T>(url: string, body: unknown): Promise<T | undefined> =>{
@@ -79,7 +75,7 @@ export const useRequests = () =>{
 
     return{
         loading,
-        getRequest,
+        request,
         postRequest,
         authRequest,
     };

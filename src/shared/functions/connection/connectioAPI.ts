@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios, { AxiosRequestConfig } from "axios";
-import { MethosEnum } from "../../enums/methods.enum";
+import { MethodsEnum } from "../../enums/methods.enum";
 import { ERROR_ACCESS_DENIED, ERROR_CONNECTION, ERROR_INVALID_USER } from "../../constants/errorsStatus";
 import { getAuthorizationToken } from "./auth";
 
+export type MethodTypes = 'get' | 'post' | 'put' | 'patch' | 'delete';
+
 export default class ConnectionAPI {
 
-    static async call<T>(url: string, method: string, body?: unknown): Promise<T> {
+    static async call<T>(url: string, method: MethodTypes, body?: unknown): Promise<T> {
         const config: AxiosRequestConfig = {
             headers: {
                 'Content-Type': 'application/json',
@@ -16,24 +18,18 @@ export default class ConnectionAPI {
 
         switch (method) {
 
-            case MethosEnum.GET:
-                return (await axios.get<T>(url, config)).data;
-
-            case MethosEnum.DELETE:
-                return (await axios.delete<T>(url, config)).data;
-
-            case MethosEnum.POST:
-                return (await axios.post<T>(url, body, config)).data;
-
-            case MethosEnum.PUT:
-                return (await axios.put<T>(url, body, config)).data;
-
+            case MethodsEnum.POST:
+            case MethodsEnum.PUT:
+            case MethodsEnum.PATCH:
+                return (await axios[method]<T>(url, body, config)).data;
+            case MethodsEnum.GET:
+            case MethodsEnum.DELETE:
             default:
-                return (await axios.patch<T>(url, body, config)).data;
+                return (await axios[method]<T>(url, config)).data;
         }
     }
 
-    static async connect<T>(url: string, method: string, body?: unknown): Promise<T> {
+    static async connect<T>(url: string, method: MethodTypes, body?: unknown): Promise<T> {
         return  this.call<T>(url, method, body).catch((error)=> {
             if(error?.response){
                 switch (error?.response?.status) {
@@ -53,21 +49,21 @@ export default class ConnectionAPI {
 }
 
 export const connectionAPIGet = async <T>(url: string): Promise<T> => {
-    return ConnectionAPI.connect(url, MethosEnum.GET);
+    return ConnectionAPI.connect(url, MethodsEnum.GET);
 }
 
 export const connectionAPIDelete = async <T>(url: string): Promise<T> => {
-    return ConnectionAPI.connect(url, MethosEnum.DELETE);
+    return ConnectionAPI.connect(url, MethodsEnum.DELETE);
 }
 
 export const connectionAPIPost = async <T>(url: string, body: unknown): Promise<T> => {
-    return ConnectionAPI.connect(url, MethosEnum.POST, body);
+    return ConnectionAPI.connect(url, MethodsEnum.POST, body);
 }
 
 export const connectionAPIPut = async <T>(url: string, body: unknown): Promise<T> => {
-    return ConnectionAPI.connect(url, MethosEnum.PUT, body);
+    return ConnectionAPI.connect(url, MethodsEnum.PUT, body);
 }
 
 export const connectionAPIPatch = async <T>(url: string, body: unknown): Promise<T> => {
-    return ConnectionAPI.connect(url, MethosEnum.PATCH, body);
+    return ConnectionAPI.connect(url, MethodsEnum.PATCH, body);
 }
